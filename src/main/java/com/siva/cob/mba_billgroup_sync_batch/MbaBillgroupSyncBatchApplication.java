@@ -38,6 +38,7 @@ public class MbaBillgroupSyncBatchApplication {
 			System.out.println(batchExecution);
 			BillGroupSyncService service=context.getBean(BillGroupSyncService.class);
 			service.doSync();
+			System.out.println("hellosiva second commit ara");
 
 		}catch (FileNotFoundException e){
 			e.printStackTrace();
