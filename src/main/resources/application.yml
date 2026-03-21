@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog_application
+    username: root
+    password: Sivamysql@17
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jdbc:
+    template:
+      query-timeout: 60
+
+#
+#couchbase:
+#  connection-string: 127.0.0.1
+#  username: SivaBilling
+#  password: Subha@17
+#  #  bucket-name: BillingAccount
+#  bucket-name: MBA
+#  scope-name: Support
+#  # Optional: Set the scope if needed
+#  # scope-name: your_scope_name
+#  # Optional: Set the timeout and other parameters
+#  bucket:
+#    refData:
+#      refresh:
+#        cron: "0 */15 * * * *"  # Runs every 15 minutes
+
+
+logging:
+  config: classpath:log4j2.xml

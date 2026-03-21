@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <!-- ==========
+         PROPERTIES
+         ========== -->
+    <Properties>
+        <!-- Date/time format -->
+        <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
+
+        <!-- Console & file patterns -->
+        <Property name="CONSOLE_LOG_PATTERN">
+            %d{${LOG_DATEFORMAT_PATTERN}} %-5level [%t] %c{1} - %msg%n
+        </Property>
+
+        <Property name="FILE_LOG_PATTERN">
+            %d{${LOG_DATEFORMAT_PATTERN}} %-5level [%t] %c{1} - %msg%n%throwable
+        </Property>
+
+        <!-- Default log level (can be overridden with -DLOG_LEVEL=DEBUG, etc.) -->
+        <Property name="LOG_LEVEL">${sys:LOG_LEVEL:-INFO}</Property>
+
+        <!-- LOG_PATH and LOG_FILE must be provided as system properties:
+             -DLOG_PATH=C:/final/log/
+             -DLOG_FILE=mbco_batch_20251115_101500_12345.log
+        -->
+        <Property name="LOG_PATH">${sys:LOG_PATH}</Property>
+        <Property name="LOG_FILE">${sys:LOG_FILE}</Property>
+    </Properties>
+
+    <!-- ==========
+         APPENDERS
+         ========== -->
+    <Appenders>
+
+        <!-- Console -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_LOG_PATTERN}"/>
+        </Console>
+
+        <!-- Rolling file -->
+        <RollingFile name="File"
+                     fileName="${LOG_PATH}${LOG_FILE}"
+                     filePattern="${LOG_PATH}archive/%d{yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz"
+                     createOnDemand="true">
+            <PatternLayout pattern="${FILE_LOG_PATTERN}"/>
+
+            <Policies>
+                <!-- Roll when file reaches ~10MB -->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+
+            <!-- Keep last 30 archives (optional) -->
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <!-- ==========
+         LOGGERS
+         ========== -->
+    <Loggers>
+
+        <!-- Your package logger (optional, example) -->
+        <Logger name="com.siva.project.bulkitem_report"
+                level="${LOG_LEVEL}"
+                additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Logger>
+
+        <!-- Root logger -->
+        <Root level="${LOG_LEVEL}">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
