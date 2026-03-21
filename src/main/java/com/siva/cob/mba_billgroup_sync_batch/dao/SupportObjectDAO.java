@@ -68,6 +68,7 @@ public class SupportObjectDAO extends BaseMbcoDAO {
         } catch (Exception e) {
             LOG.error("Failed to insert SupportObject [{}]: {}", dto.getIdentifier(), e.getMessage(), e);
             e.printStackTrace();
+            LOG.error("Error message :{}",e.getMessage());
             return 0;
         }
     }
