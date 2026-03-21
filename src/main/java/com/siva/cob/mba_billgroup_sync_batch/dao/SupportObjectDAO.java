@@ -58,6 +58,8 @@ public class SupportObjectDAO extends BaseMbcoDAO {
                 .addValue("billingAccScope", dto.getBillingAccountScope())
                 .addValue("billGroup", dto.getBillGroup());
 
+        LOG.info("sql query :{}",INSERT_SQL);
+        LOG.info("Params :{}",params);
         try {
             LOG.info("Inserting SupportObject: {}", dto.getIdentifier());
             int rows = supportObjectTemplate.update(INSERT_SQL, params);
