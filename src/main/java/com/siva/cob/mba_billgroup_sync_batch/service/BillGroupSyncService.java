@@ -66,6 +66,8 @@ public class BillGroupSyncService {
 
         File[] readyFiles = billGroupFileFetchService.getFiles(readyDir);
 
+        System.out.println("hello siva,third commit to repository");
+
         if (readyFiles == null || readyFiles.length == 0) {
             LOG.error("No input files found in READY directory: {}", readyDir);
             throw new IllegalStateException("No files to process in READY directory");
