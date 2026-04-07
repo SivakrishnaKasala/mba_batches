@@ -5,6 +5,8 @@ import com.siva.cob.mba_billgroup_sync_batch.dto.SupportObjectDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -69,20 +71,40 @@ public class SupportObjectDAO extends BaseMbcoDAO {
             LOG.error("Failed to insert SupportObject [{}]: {}", dto.getIdentifier(), e.getMessage(), e);
             e.printStackTrace();
             LOG.error("Error message :{}",e.getMessage());
-            return 0;
+//            return 0;
+            throw e;
         }
     }
 
     public SupportObjectDTO findSupportObject(){
+
+
         String query="SELECT * FROM SUPPORT_OBJECT ORDER BY IDENTIFIER DESC LIMIT 1";
-        MapSqlParameterSource source=new MapSqlParameterSource();
-        SupportObjectDTO supportObjectDTO=null;
-        try{
-            supportObjectDTO= supportObjectTemplate.queryForObject(query,source,new BeanPropertyRowMapper<>(SupportObjectDTO.class));
-            System.out.println(supportObjectDTO);
-        }catch (Exception e){
-            LOG.error("Error occurred while retrieving the Object from DB");
+
+        LOG.info("Query used for fetching the SupportObject identifier : {}",query);
+
+        try {
+            SupportObjectDTO supportObjectDTO =
+                    supportObjectTemplate.queryForObject(
+                            query,
+                            new MapSqlParameterSource(),
+                            new BeanPropertyRowMapper<>(SupportObjectDTO.class)
+                    );
+
+            LOG.info("Fetched SupportObject: {}", supportObjectDTO);
+            return supportObjectDTO;
+
+        } catch (EmptyResultDataAccessException e) {
+            // ✅ No data found case
+            LOG.warn("No SupportObject found in database");
+            return null;
+        } catch (DataAccessException e){
+            // ✅ DB related exceptions
+            LOG.error("Error occurred while retrieving SupportObject from DB", e);
+            throw e; // rethrow (recommended)
         }
-        return supportObjectDTO;
+
     }
+
+
 }
