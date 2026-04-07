@@ -12,6 +12,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Repository
 public class SupportObjectDAO extends BaseMbcoDAO {
 
@@ -102,6 +106,28 @@ public class SupportObjectDAO extends BaseMbcoDAO {
             // ✅ DB related exceptions
             LOG.error("Error occurred while retrieving SupportObject from DB", e);
             throw e; // rethrow (recommended)
+        }
+
+    }
+
+    public List<SupportObjectDTO> getSupportObject() {
+
+        List<SupportObjectDTO> result = new ArrayList<>();
+
+        String query = "SELECT * FROM SUPPORT_OBJECT";
+        try {
+            LOG.info("Query used for fetch the supportObject : [{}]", query);
+            result = supportObjectTemplate.query(query, new BeanPropertyRowMapper<>(SupportObjectDTO.class));
+
+            if (!result.isEmpty()) {
+
+                LOG.info("The List of support Object received from the database :{}", result);
+            }
+            return result;
+
+        } catch (Exception e) {
+            LOG.error("Exception occurred while connecting to Database {}", e.getMessage());
+            throw e;
         }
 
     }
