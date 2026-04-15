@@ -45,13 +45,7 @@ public class BillGroupSyncService {
 
     public void doSync() throws Exception, FileNotFoundException {
 
-        final List<String> expectedHeader = Arrays.asList(
-                "Customer",
-                "AgreeNr",
-                "BillingAccountIdentifier",
-                "BillingAccountIdentifierContext",
-                "BillGroup"
-        );
+        final List<String> expectedHeader = Arrays.asList("Customer", "AgreeNr", "BillingAccountIdentifier", "BillingAccountIdentifierContext", "BillGroup");
 
         final String expectedFileNamePattern = "Update_BillGroup_COB";
 
